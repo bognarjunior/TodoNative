@@ -11,6 +11,7 @@ export default (props) => {
 
 const styles = StyleSheet.create({
   containerHeader: {
+    backgroundColor: '#FFFFFF',
     alignItems: 'center', 
     justifyContent: 'center', 
     height: 40
