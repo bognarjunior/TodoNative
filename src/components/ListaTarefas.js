@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Tarefa from './Tarefa';
 
 export default class ListaTarefas extends Component {
@@ -12,9 +12,3 @@ export default class ListaTarefas extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  containerHeader: {
-    flex: 1,
-  },
-})

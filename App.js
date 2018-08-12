@@ -18,7 +18,9 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <Header title='Tarefas'/>
-        <ListaTarefas tarefas={tarefas}/>
+        <View style={styles.main}>
+          <ListaTarefas tarefas={tarefas}/>
+        </View>
       </View>
     );
   }
@@ -29,4 +31,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
+  main: {
+    flex: 1,
+    padding: 10,
+  }
 });
