@@ -25,12 +25,20 @@ export default class App extends Component {
       });
     });
   }
+
+  rederListaTarefas() {
+    if(this.state.tarefas) {
+      return <ListaTarefas tarefas={this.state.tarefas}/>
+    }
+    return <Text>Carregando tarefas...</Text>
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Header title='Tarefas'/>
         <View style={styles.main}>
-          <ListaTarefas tarefas={this.state.tarefas}/>
+          {this.rederListaTarefas()}
         </View>
       </View>
     );
