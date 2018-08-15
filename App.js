@@ -1,32 +1,57 @@
 import React, {Component} from 'react';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Text, Button} from 'react-native';
 import Header from './src/components/Header';
 import ListaTarefas from './src/components/ListaTarefas';
 import { fetchTodos } from './src/api';
 
-export default class App extends Component {
+class App extends Component {
   state = {
     tarefas: null,
     isFetching: false,
+    tarefasErro: null,
   }
 
   componentDidMount() {
-    this.setState({
-      isFetching: true
-    }, () => {
-      fetchTodos()
-      .then( tarefas => {
-        this.setState({
-          tarefas,
-          isFetching: false
-        });
-      }).catch((err) => {
-        console.log('erro', err);
-      });
-    });
+    this.fetchData();
+  }
+
+  fetchData() {
+    this.setState({ 
+      isFetching: true, 
+      tarefasErro: null }, 
+      () => {
+        this.props.fetchTodos()
+          .then(tarefas => {
+            this.setState({
+              tarefas,
+              isFetching: false
+            });
+          })
+          .catch(error => {
+            this.setState({
+              tarefasErro: `Houve um erro ao consultar as tarefas: ${error.message}`
+            });
+          });
+      }
+    );
+  }
+
+  onReloadPress = () => {
+    this.fetchData();
   }
 
   rederListaTarefas() {
+    if(this.state.tarefasErro) {
+      return (
+        <View>
+          <Text style={{ color: '#ff0000' }}>{this.state.tarefasErro}</Text>
+          <Button
+            onPress={this.onReloadPress}
+            title="Tentar Novamente"
+          />
+        </View>
+      );
+    }
     if(this.state.tarefas) {
       return <ListaTarefas tarefas={this.state.tarefas}/>
     }
@@ -55,3 +80,5 @@ const styles = StyleSheet.create({
     padding: 10,
   }
 });
+
+export default  (props) => <App {...props} fetchTodos={fetchTodos} />;
