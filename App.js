@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Text, Button} from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView} from 'react-native';
 import Header from './src/components/Header';
 import ListaTarefas from './src/components/ListaTarefas';
 import { fetchTodos } from './src/api';
@@ -62,9 +62,11 @@ class App extends Component {
     return (
       <View style={styles.container}>
         <Header title='Tarefas'/>
-        <View style={styles.main}>
-          {this.rederListaTarefas()}
-        </View>
+        <ScrollView>
+          <View style={styles.main}>
+            {this.rederListaTarefas()}
+          </View>
+        </ScrollView>
       </View>
     );
   }
