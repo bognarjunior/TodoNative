@@ -5,3 +5,7 @@ const url = 'http://192.168.15.13:3000/tarefas';
 export const fetchTodos = () => {
   return fetch(url).then(response =>  response.json());
 }
+
+export const createTarefa = (tarefa) => {
+  console.log('Create Tarefa');
+}

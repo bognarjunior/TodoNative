@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import { StyleSheet, View, Text, Button, ScrollView} from 'react-native';
 import Header from './src/components/Header';
 import ListaTarefas from './src/components/ListaTarefas';
-import { fetchTodos } from './src/api';
+import { fetchTodos, createTarefa } from './src/api';
+import CampoTarefa from './src/components/CampoTarefa';
 
 class App extends Component {
   state = {
     tarefas: null,
     isFetching: false,
     tarefasErro: null,
+    tarefaNova: '',
   }
 
   componentDidMount() {
@@ -40,6 +42,18 @@ class App extends Component {
     this.fetchData();
   }
 
+  onTarefaChange = (text) => {
+    this.setState({
+      tarefaNova: text
+    });
+  }
+
+  onTarefaAdd = () => {
+    this.props.createTarefa({
+      texto: this.state.tarefaNova
+    });
+  }
+
   rederListaTarefas() {
     if(this.state.tarefasErro) {
       return (
@@ -64,6 +78,11 @@ class App extends Component {
         <Header title='Tarefas'/>
         <ScrollView>
           <View style={styles.main}>
+            <CampoTarefa 
+              value={this.state.tarefaNova} 
+              onChangeText={this.onTarefaChange} 
+              onTarefaAdd={this.onTarefaAdd}
+            />
             {this.rederListaTarefas()}
           </View>
         </ScrollView>
@@ -83,4 +102,9 @@ const styles = StyleSheet.create({
   }
 });
 
-export default  (props) => <App {...props} fetchTodos={fetchTodos} />;
+export default  (props) => 
+  <App 
+    {...props} 
+    fetchTodos={fetchTodos} 
+    createTarefa={createTarefa}
+  />;
