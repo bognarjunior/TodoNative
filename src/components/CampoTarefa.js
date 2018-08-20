@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     padding: 6,
+    borderColor: '#000000',
   },
   error: {
     borderColor: '#ff9999',
