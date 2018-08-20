@@ -62,7 +62,10 @@ class App extends Component {
             tarefas: this.state.tarefas.concat(tarefa),
             tarefaNova: ''
           })
-        );
+        )
+        .catch(error => this.setState({
+          tarefaNovaErro: `Fala ao criar uma nova tarefa: ${error.message}`
+        }));
       })
     } else {
       this.setState({
@@ -76,7 +79,7 @@ class App extends Component {
     if(this.state.tarefasErro) {
       return (
         <View>
-          <Text style={{ color: '#ff0000' }}>{this.state.tarefasErro}</Text>
+          <Text style={styles.errorMessage}>{this.state.tarefasErro}</Text>
           <Button
             onPress={this.onReloadPress}
             title="Tentar Novamente"
@@ -103,7 +106,7 @@ class App extends Component {
             />
             {
               this.state.tarefaNovaErro ?
-              <Text>{this.state.tarefaNovaErro}</Text> :
+              <Text style={styles.errorMessage}>{this.state.tarefaNovaErro}</Text> :
               null
             }
             {this.rederListaTarefas()}
@@ -122,6 +125,9 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     padding: 10,
+  },
+  errorMessage: {
+    color: '#ff0000'
   }
 });
 
