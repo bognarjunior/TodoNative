@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { StyleSheet, View, Text, Button, ScrollView} from 'react-native';
 import Header from './src/components/Header';
 import ListaTarefas from './src/components/ListaTarefas';
-import { fetchTodos, createTarefa } from './src/api';
+import { fetchTodos, createTarefa, updateTarefa } from './src/api';
 import NovaTarefa from './src/components/NovaTarefa';
 
 class App extends Component {
@@ -75,6 +75,24 @@ class App extends Component {
     
   }
 
+  onTarefaUpdate = (tarefa) => {
+    return (
+      this.props.updateTarefa(tarefa)
+      .then(tarefaAtualizada => {
+        const listaAtualizada = this.state.tarefas.map(tarefa => {
+          if (tarefa.id === tarefaAtualizada.id) {
+            return tarefaAtualizada;
+          }
+          return tarefa;
+        });
+
+        this.setState({
+          tarefas: listaAtualizada
+        })
+      })
+    )
+  };
+  
   rederListaTarefas() {
     if(this.state.tarefasErro) {
       return (
@@ -88,7 +106,12 @@ class App extends Component {
       );
     }
     if(this.state.tarefas) {
-      return <ListaTarefas tarefas={this.state.tarefas}/>
+      return (
+        <ListaTarefas 
+          tarefas={this.state.tarefas}
+          onTarefaUpdate={this.onTarefaUpdate}
+        />
+      )
     }
     return <Text>Carregando tarefas...</Text>
   }
@@ -132,4 +155,5 @@ export default  (props) =>
     {...props} 
     fetchTodos={fetchTodos} 
     createTarefa={createTarefa}
+    updateTarefa={updateTarefa}
   />;
