@@ -11,6 +11,7 @@ class App extends Component {
     isFetching: false,
     tarefasErro: null,
     tarefaNova: '',
+    tarefaNovaErro: null
   }
 
   componentDidMount() {
@@ -49,15 +50,26 @@ class App extends Component {
   }
 
   onTarefaAdd = () => {
-    this.props.createTarefa({
-      texto: this.state.tarefaNova
-    })
-    .then(
-      tarefa => this.setState({
-        tarefas: this.state.tarefas.concat(tarefa),
-        tarefaNova: ''
+    if (this.state.tarefaNova.length > 0) {
+      this.setState({
+        tarefaNovaErro: null
+      }, () => {
+        this.props.createTarefa({
+          texto: this.state.tarefaNova
+        })
+        .then(
+          tarefa => this.setState({
+            tarefas: this.state.tarefas.concat(tarefa),
+            tarefaNova: ''
+          })
+        );
       })
-    );
+    } else {
+      this.setState({
+        tarefaNovaErro: 'Digite ao menos um caractere para inserir uma nova tarefa'
+      })
+    }
+    
   }
 
   rederListaTarefas() {
@@ -89,6 +101,11 @@ class App extends Component {
               onChangeText={this.onTarefaChange} 
               onTarefaAdd={this.onTarefaAdd}
             />
+            {
+              this.state.tarefaNovaErro ?
+              <Text>{this.state.tarefaNovaErro}</Text> :
+              null
+            }
             {this.rederListaTarefas()}
           </View>
         </ScrollView>
