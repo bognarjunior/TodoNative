@@ -27,3 +27,14 @@ export const updateTarefa = (tarefa) => {
   })
   .then(response => response.json());
 }
+
+export const deleteTarefa = (id) => {
+  return fetch(`${url}/${id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+  .then(response => response.json());
+}

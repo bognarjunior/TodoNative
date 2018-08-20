@@ -25,7 +25,7 @@ export default class Tarefa extends Component {
 
   onTarefaChange = (texto) => this.setState({ tarefaEditada: texto });
 
-  onUpdatePress = (texto) => {
+  onUpdatePress = () => {
     if (this.state.tarefaEditada > 0) {
       this.setState({
         tarefaErro: null
@@ -40,7 +40,7 @@ export default class Tarefa extends Component {
           })
         )
         .catch(error => this.setState({
-          tarefaNovaErro: `Fala ao atualizar a tarefa: ${error.message}`
+          tarefaErro: `Fala ao atualizar a tarefa: ${error.message}`
         }));
       });
     } else {
@@ -51,32 +51,49 @@ export default class Tarefa extends Component {
     
   };
 
+  onRemovePress = () => {
+    this.props.onTarefaRemove(this.props.tarefa.id)
+    .catch(error => this.setState({
+      tarefaErro: `Fala ao remover a tarefa: ${error.message}`
+    }));
+  }
+
   render() {
     if (this.state.editando) {
       return (
         <View style={styles.containerTarefa}>
-        <View style={{ flex: 3}}>
-          <CampoTarefa 
-            value={this.state.tarefaEditada} 
-            onChangeText={this.onTarefaChange}
-            error={!!this.state.tarefaErro}
-          />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flex: 3}}>
+              <CampoTarefa 
+                value={this.state.tarefaEditada} 
+                onChangeText={this.onTarefaChange}
+                error={!!this.state.tarefaErro}
+              />
+            </View>
+            <View style={styles.buttons}>
+              <ActionButton content="✔" onPress={this.onUpdatePress}/>
+              <ActionButton content="⃠" onPress={this.onCancelPress}/>
+            </View>
           </View>
-          <View style={styles.buttons}>
-            <ActionButton content="✔" onPress={this.onUpdatePress}/>
-            <ActionButton content="⃠" onPress={this.onCancelPress}/>
-          </View>
+          {
+            this.state.tarefaErro ? 
+            <View>
+              <Text style={{ color: '#ff0000' }}>{this.state.tarefaErro}</Text>
+            </View> : null
+          }
         </View>
       );
     }
     return (
       <View style={styles.containerTarefa}>
-        <View style={{ flex: 3}}>
-          <Text style={styles.labelTarefa}>{this.props.tarefa.texto}</Text>
-        </View>
-        <View style={styles.buttons}>
-          <ActionButton content="✎" onPress={this.onEditPress }/>
-          <ActionButton content="✖" onPress={() => null }/>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 3}}>
+            <Text style={styles.labelTarefa}>{this.props.tarefa.texto}</Text>
+          </View>
+          <View style={styles.buttons}>
+            <ActionButton content="✎" onPress={this.onEditPress}/>
+            <ActionButton content="✖" onPress={this.onRemovePress}/>
+          </View>
         </View>
         {
           this.state.tarefaErro ? 
@@ -92,7 +109,6 @@ export default class Tarefa extends Component {
 const styles = StyleSheet.create({
   containerTarefa: {
     marginBottom: 6,
-    flexDirection: 'row',
   },
   labelTarefa: {
     fontSize: 16,

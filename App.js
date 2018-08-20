@@ -2,7 +2,13 @@ import React, {Component} from 'react';
 import { StyleSheet, View, Text, Button, ScrollView} from 'react-native';
 import Header from './src/components/Header';
 import ListaTarefas from './src/components/ListaTarefas';
-import { fetchTodos, createTarefa, updateTarefa } from './src/api';
+import {
+  fetchTodos,
+  createTarefa,
+  updateTarefa,
+  deleteTarefa
+} from './src/api';
+
 import NovaTarefa from './src/components/NovaTarefa';
 
 class App extends Component {
@@ -92,6 +98,18 @@ class App extends Component {
       })
     )
   };
+
+  onTarefaRemove = (id) => {
+    return (
+      this.props.deleteTarefa(id)
+      .then(() => {
+        const tarefasAtualizadas = this.state.tarefas.filter(tarefa => tarefa.id !== id);
+        this.setState({
+          tarefas: tarefasAtualizadas
+        })
+      })
+    ) 
+  }
   
   rederListaTarefas() {
     if(this.state.tarefasErro) {
@@ -110,6 +128,7 @@ class App extends Component {
         <ListaTarefas 
           tarefas={this.state.tarefas}
           onTarefaUpdate={this.onTarefaUpdate}
+          onTarefaRemove={this.onTarefaRemove}
         />
       )
     }
@@ -156,4 +175,5 @@ export default  (props) =>
     fetchTodos={fetchTodos} 
     createTarefa={createTarefa}
     updateTarefa={updateTarefa}
+    deleteTarefa={deleteTarefa}
   />;

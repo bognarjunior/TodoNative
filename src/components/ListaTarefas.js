@@ -9,6 +9,7 @@ export default class ListaTarefas extends Component {
         key={t.id}  
         tarefa={t}
         onTarefaUpdate={props.onTarefaUpdate}
+        onTarefaRemove={props.onTarefaRemove}
       />
     )
   );
