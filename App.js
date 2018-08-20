@@ -103,6 +103,7 @@ class App extends Component {
               value={this.state.tarefaNova} 
               onChangeText={this.onTarefaChange} 
               onTarefaAdd={this.onTarefaAdd}
+              error={!!this.state.tarefaNovaErro}
             />
             {
               this.state.tarefaNovaErro ?

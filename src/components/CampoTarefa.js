@@ -8,10 +8,16 @@ import {
 } from 'react-native';
 
 const CampoTarefa = (props) => {
+  let textInputStyle = [styles.textInput];
+
+  if (props.error) {
+    textInputStyle.push(styles.error);
+  }
+
   return (
     <View>
       <TextInput 
-        style={styles.textInput}
+        style={textInputStyle}
         value={props.value}
         onChangeText={props.onChangeText}
       />
@@ -29,6 +35,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 6,
   },
+  error: {
+    borderColor: '#ff9999',
+  }
 });
 
 export default CampoTarefa;
