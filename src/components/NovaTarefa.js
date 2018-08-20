@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { View , Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View , Text, StyleSheet } from 'react-native';
 
 import CampoTarefa from './CampoTarefa';
+import ActionButton from './ActionButton';
 
 const NovaTarefa = (props) => {
   return (
@@ -12,9 +13,7 @@ const NovaTarefa = (props) => {
         onChangeText={props.onChangeText}
         error={!!props.error}
       />
-      <TouchableOpacity onPress={props.onTarefaAdd}>
-        <Text>+</Text>
-      </TouchableOpacity>
+      <ActionButton content="+" onPress={props.onTarefaAdd}/>
       {
         !!props.error ?
         <Text style={styles.errorMessage}>{props.error}</Text> :
