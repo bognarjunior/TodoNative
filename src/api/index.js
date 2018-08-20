@@ -7,5 +7,13 @@ export const fetchTodos = () => {
 }
 
 export const createTarefa = (tarefa) => {
-  console.log('Create Tarefa');
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(tarefa),
+  })
+  .then(response => response.json());
 }

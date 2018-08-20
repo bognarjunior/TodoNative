@@ -51,7 +51,13 @@ class App extends Component {
   onTarefaAdd = () => {
     this.props.createTarefa({
       texto: this.state.tarefaNova
-    });
+    })
+    .then(
+      tarefa => this.setState({
+        tarefas: this.state.tarefas.concat(tarefa),
+        tarefaNova: ''
+      })
+    );
   }
 
   rederListaTarefas() {
