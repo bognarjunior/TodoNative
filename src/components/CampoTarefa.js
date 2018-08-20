@@ -1,10 +1,8 @@
 import React from 'react';
 import { 
   View,
-  Text,
   TextInput,
-  StyleSheet,
-  TouchableOpacity
+  StyleSheet
 } from 'react-native';
 
 const CampoTarefa = (props) => {
@@ -17,13 +15,11 @@ const CampoTarefa = (props) => {
   return (
     <View>
       <TextInput 
+        maxLength={64}
         style={textInputStyle}
         value={props.value}
         onChangeText={props.onChangeText}
       />
-      <TouchableOpacity onPress={props.onTarefaAdd}>
-      <Text>+</Text>
-      </TouchableOpacity>
     </View>
   );
 };

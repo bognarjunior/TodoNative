@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Button, ScrollView} from 'react-native';
 import Header from './src/components/Header';
 import ListaTarefas from './src/components/ListaTarefas';
 import { fetchTodos, createTarefa } from './src/api';
-import CampoTarefa from './src/components/CampoTarefa';
+import NovaTarefa from './src/components/NovaTarefa';
 
 class App extends Component {
   state = {
@@ -99,17 +99,12 @@ class App extends Component {
         <Header title='Tarefas'/>
         <ScrollView>
           <View style={styles.main}>
-            <CampoTarefa 
+            <NovaTarefa
               value={this.state.tarefaNova} 
               onChangeText={this.onTarefaChange} 
               onTarefaAdd={this.onTarefaAdd}
-              error={!!this.state.tarefaNovaErro}
+              error={this.state.tarefaNovaErro}
             />
-            {
-              this.state.tarefaNovaErro ?
-              <Text style={styles.errorMessage}>{this.state.tarefaNovaErro}</Text> :
-              null
-            }
             {this.rederListaTarefas()}
           </View>
         </ScrollView>
