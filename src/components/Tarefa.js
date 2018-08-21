@@ -11,7 +11,8 @@ export default class Tarefa extends Component {
     this.state = {
       editando: false,
       tarefaEditada: this.props.tarefa.texto,
-      tarefaErro: null
+      tarefaErro: null,
+      tarefaCarregando: false,
     }
   }
   
@@ -27,21 +28,26 @@ export default class Tarefa extends Component {
 
   onUpdatePress = () => {
     if (this.state.tarefaEditada > 0) {
-      this.setState({
-        tarefaErro: null
+      this.setState({ 
+        tarefaErro: null, 
+        tarefaCarregando: true 
       }, () => {
         this.props.onTarefaUpdate({
           id: this.props.tarefa.id,
           texto: this.state.tarefaEditada
         })
-        .then( tarefa =>
-          this.setState({
-            editando: false
+          .then(tarefaAtualizada => {
+            this.setState({ 
+              editando: false, 
+              tarefaCarregando: false 
+            });
           })
-        )
-        .catch(error => this.setState({
-          tarefaErro: `Fala ao atualizar a tarefa: ${error.message}`
-        }));
+          .catch(error => {
+            this.setState({
+              tarefaErro: `Fala ao atualizar a tarefa: ${error.message}`,
+              tarefaCarregando: false,
+            });
+          });
       });
     } else {
       this.setState({
@@ -52,10 +58,18 @@ export default class Tarefa extends Component {
   };
 
   onRemovePress = () => {
-    this.props.onTarefaRemove(this.props.tarefa.id)
-    .catch(error => this.setState({
-      tarefaErro: `Fala ao remover a tarefa: ${error.message}`
-    }));
+    this.setState({ tarefaCarregando: true }, () => {
+      this.props.onTarefaRemove(this.props.tarefa.id)
+        .then(() => {
+          this.setState({ tarefaCarregando: false });
+        })
+        .catch(error => {
+          this.setState({
+            tarefaErro: `Fala ao remover a tarefa: ${error.message}`,
+            tarefaCarregando: false,
+          });
+        });
+    })
   }
 
   render() {
@@ -71,8 +85,15 @@ export default class Tarefa extends Component {
               />
             </View>
             <View style={styles.buttons}>
-              <ActionButton content="✔" onPress={this.onUpdatePress}/>
-              <ActionButton content="⃠" onPress={this.onCancelPress}/>
+              <ActionButton 
+                content="✔" 
+                onPress={this.onUpdatePress}
+                loading={this.state.tarefaCarregando}
+              />
+              <ActionButton 
+                content="⃠" 
+                onPress={this.onCancelPress}
+              />
             </View>
           </View>
           {
@@ -91,8 +112,15 @@ export default class Tarefa extends Component {
             <Text style={styles.labelTarefa}>{this.props.tarefa.texto}</Text>
           </View>
           <View style={styles.buttons}>
-            <ActionButton content="✎" onPress={this.onEditPress}/>
-            <ActionButton content="✖" onPress={this.onRemovePress}/>
+            <ActionButton 
+              content="✎" 
+              onPress={this.onEditPress}
+            />
+            <ActionButton 
+              content="✖" 
+              onPress={this.onRemovePress} 
+              loading={this.state.tarefaCarregando}
+            />
           </View>
         </View>
         {
